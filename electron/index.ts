@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Notification, Menu   } from 'electron'
+import { app, BrowserWindow, Notification, Menu, ipcMain   } from 'electron'
 import path from 'path'
 //app 控制应用程序的事件生命周期。
 //BrowserWindow 创建并控制浏览器窗口。
@@ -9,14 +9,16 @@ let win: BrowserWindow | null;
 const createWindow = () => {
     win = new BrowserWindow({
         //
-        width: 500,
-        height: 500,
+        width: 400,
+        height: 400,
         webPreferences: {
             devTools: true,
             contextIsolation: false,
             nodeIntegration: true
             //允许html页面上的javascipt代码访问nodejs 环境api代码的能力（与node集成的意思）
-        }
+        },
+        frame: false,
+        transparent: true,
     })
     console.log(app.isPackaged, 'app.isPackaged')
     console.log(__dirname, '__dirname')
@@ -68,10 +70,19 @@ const template = [
     submenu: [
       isMac ? {label: '关闭', role: 'close' } : { label: '退出', role: 'quit' }
     ]
-  },
+  }, 
 
 ]
 
 const menu = Menu.buildFromTemplate(template)
 Menu.setApplicationMenu(menu)
+
 app.whenReady().then(createWindow)
+app.on('window-all-closed', () => {
+  if(process.platform != 'darwin'){
+    app.quit()
+  }
+})
+// app.on('activate', () => {
+//   createWindow()
+// })
