@@ -1,0 +1,69 @@
+{
+  "name": "momoyu",
+  "private": true,
+  "version": "0.0.1",
+  "main": "dist-electron/index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development vite",
+    "build": "vue-tsc --noEmit && vite build  &&  electron-builder",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "vue": "^3.2.37"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^3.0.0",
+    "electron": "^24.2.0",
+    "electron-builder": "^23.6.0",
+    "typescript": "^4.6.4",
+    "vite": "^3.0.0",
+    "vite-plugin-electron": "^0.11.2",
+    "vue-tsc": "^0.38.4"
+  },
+  "build": {
+    "appId": "com.electron.desktop",
+    "productName": "momoyu",
+    "asar": false,
+    "copyright": "Copyright © 2022 electron",
+    "directories": {
+      "output": "release/"
+    },
+    "files": [
+      "dist",
+      "dist-electron"
+    ],
+    "mac": {
+      "artifactName": "${productName}_${version}.${ext}",
+      "target": [
+        "dmg"
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "${productName}_${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": false
+    },
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "http://127.0.0.1:8080"
+      }
+    ],
+    "releaseInfo": {
+      "releaseNotes": "版本更新的具体内容"
+    }
+  }
+}
