@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, Notification, Menu   } from 'electron'
 import path from 'path'
 //app 控制应用程序的事件生命周期。
 //BrowserWindow 创建并控制浏览器窗口。
@@ -35,4 +35,43 @@ const createWindow = () => {
         //win.loadURL(`http://${process.env['VITE_DEV_SERVER_HOSTNAME']}:${process.env['VITE_DEV_SE//RVER_PORT']}`)
    // }
 //在Electron完成初始化时被触发
+const isMac = process.platform === 'darwin'
+
+const template = [
+  // { role: 'appMenu' }
+  ...(isMac ? [{
+    label: app.name,
+    submenu: [
+      { role: 'about' },
+      { type: 'separator' },
+      { role: 'services' },
+      { type: 'separator' },
+      { role: 'hide' },
+      { role: 'hideOthers' },
+      { role: 'unhide' },
+      { type: 'separator' },
+      { role: 'quit' }
+    ]
+  }] : []),
+  // { role: 'editMenu' }
+  {
+    label: '设置',
+    submenu: [
+      { label:'复制', role: 'copy' },
+      { label: '粘贴', role: 'paste' },
+
+    ]
+  },
+  // { role: 'fileMenu' }
+  {
+    label: '退出',
+    submenu: [
+      isMac ? {label: '关闭', role: 'close' } : { label: '退出', role: 'quit' }
+    ]
+  },
+
+]
+
+const menu = Menu.buildFromTemplate(template)
+Menu.setApplicationMenu(menu)
 app.whenReady().then(createWindow)

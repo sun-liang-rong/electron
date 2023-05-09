@@ -176,26 +176,33 @@ const countdown = () => {
   const hours = Math.floor(diff / (1000 * 60 * 60)); // 计算相差的小时数
   const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)); // 计算相差的分钟数
   const seconds = Math.floor((diff % (1000 * 60)) / 1000); // 计算相差的秒数
+  if (hours == 0 && minutes == 30 && seconds == 0) {
+    const NOTIFICATION_TITLE = "距离下班时间还有30分钟";
+    const NOTIFICATION_BODY = "恭喜打工人,马上下班啦,又活了一天,真好";
+    const CLICK_MESSAGE = "已点击通知";
+    new Notification(NOTIFICATION_TITLE, { body: NOTIFICATION_BODY }).onclick =
+      () => console.log(CLICK_MESSAGE);
+  }
   // return `${hours}小时${minutes}分钟${seconds}秒`;
-  xiabanTemplate.value = `距离下班还有${hours}小时${minutes}分钟${seconds}秒`
-}
+  xiabanTemplate.value = `距离下班还有${hours}小时${minutes}分钟${seconds}秒`;
+};
 setInterval(() => {
   getCurrentTime();
-  countdown()
+  countdown();
 }, 1000);
 </script>
 
 <template>
   <div class="box">
     <div class="title">摸摸鱼</div>
-  <div class="time-number">
-    现在是{{ time.year }} - {{ time.month }} - {{ time.day }} {{ time.hour }} :
-    {{ time.minute }} : {{ time.second }}
-  </div>
-  <div class="goto-home">{{xiabanTemplate}}</div>
-  <div>
-    <canvas id="canvas" width="160" height="160"></canvas>
-  </div>
+    <div class="time-number">
+      现在是{{ time.year }} - {{ time.month }} - {{ time.day }}
+      {{ time.hour }} : {{ time.minute }} : {{ time.second }}
+    </div>
+    <div class="goto-home">{{ xiabanTemplate }}</div>
+    <div>
+      <canvas id="canvas" width="160" height="160"></canvas>
+    </div>
   </div>
 </template>
 
@@ -231,7 +238,7 @@ setInterval(() => {
 .goto-home {
   margin: 0 auto;
   font-size: 18px;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   text-align: center;
   color: #333;
   overflow: hidden; /* 隐藏文本溢出部分 */
